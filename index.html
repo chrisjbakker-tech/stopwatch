@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Automatische Stopwatch Webpagina</title>
+    <style>
+        /* Modern & clean design */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background: linear-gradient(135deg, #e0eafc, #cfdef3);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .stopwatch-card {
+            background: #ffffff;
+            padding: 40px 60px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 500px;
+            width: 100%;
+        }
+        h1 {
+            font-size: 1.5rem;
+            color: #555;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+        /* Zorgt dat de cijfers niet verspringen tijdens het lopen */
+        .display {
+            font-size: 3.5rem;
+            font-weight: 700;
+            color: #222;
+            font-variant-numeric: tabular-nums;
+            margin-bottom: 30px;
+            background: #f7f9fc;
+            padding: 15px;
+            border-radius: 12px;
+            border: 1px solid #e1e8ed;
+        }
+        .controls {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+        button {
+            padding: 12px 28px;
+            font-size: 1rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        #toggle-btn {
+            background-color: #ff3b30; /* Rood omdat hij al loopt (Pauze) */
+            color: white;
+        }
+        #toggle-btn.paused {
+            background-color: #34c759; /* Groen als hij gepauzeerd is (Start) */
+        }
+        #reset-btn {
+            background-color: #8e8e93;
+            color: white;
+        }
+        button:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+        button:active {
+            transform: translateY(1px);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="stopwatch-card">
+        <h1>Automatische Stopwatch</h1>
+        <!-- De klok begint direct op 00:00:00.00 -->
+        <div class="display" id="stopwatch-display">00:00:00.00</div>
+        
+        <div class="controls">
+            <button id="toggle-btn">Pauze</button>
+            <button id="reset-btn">Reset</button>
+        </div>
+    </div>
+
+    <script>
+        // Variabelen voor de tijdberekening
+        let startTime = Date.now();
+        let elapsedTime = 0;
+        let timerInterval = null;
+        let isRunning = true; // Staat direct op true omdat hij meteen start
+
+        const display = document.getElementById('stopwatch-display');
+        const toggleBtn = document.getElementById('toggle-btn');
+        const resetBtn = document.getElementById('reset-btn');
+
+        // Functie die de tijd berekent en update
+        function updateTime() {
+            const now = Date.now();
+            const diff = (now - startTime) + elapsedTime;
+
+            // Omrekenen naar uren, minuten, seconden en milliseconden
+            const h = String(Math.floor(diff / 3600000)).padStart(2, '0');
+            const m = String(Math.floor((diff % 3600000) / 60000)).padStart(2, '0');
+            const s = String(Math.floor((diff % 60000) / 1000)).padStart(2, '0');
+            const ms = String(Math.floor((diff % 1000) / 10)).padStart(2, '0');
+
+            display.innerText = `${h}:${m}:${s}.${ms}`;
+        }
+
+        // Start de timer direct bij het laden van de pagina
+        function startTimer() {
+            startTime = Date.now();
+            timerInterval = setInterval(updateTime, 10);
+            isRunning = true;
+            toggleBtn.innerText = "Pauze";
+            toggleBtn.style.backgroundColor = "#ff3b30";
+        }
+
+        // Zet de timer stil
+        function pauseTimer() {
+            clearInterval(timerInterval);
+            elapsedTime += Date.now() - startTime;
+            isRunning = false;
+            toggleBtn.innerText = "Start";
+            toggleBtn.style.backgroundColor = "#34c759";
+        }
+
+        // Knopvfunctionaliteit: Start / Pauze
+        toggleBtn.addEventListener('click', () => {
+            if (isRunning) {
+                pauseTimer();
+            } else {
+                startTimer();
+            }
+        });
+
+        // Knopfunctionaliteit: Reset
+        resetBtn.addEventListener('click', () => {
+            clearInterval(timerInterval);
+            startTime = Date.now();
+            elapsedTime = 0;
+            display.innerText = "00:00:00.00";
+            
+            // Na een reset begint de timer direct weer opnieuw te lopen
+            startTimer();
+        });
+
+        // Start het script direct zodra de pagina geladen is
+        startTimer();
+    </script>
+
+</body>
+</html>
