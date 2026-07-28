@@ -110,7 +110,9 @@
             const diff = (now - startTime) + elapsedTime;
 
             // Omrekenen naar uren, minuten, seconden en milliseconden
-const h = String(Math.floor(diff / 3600000)).padStart(2, '0');2const m = String(Math.floor((diff % 3600000) / 60000)).padStart(2, '0');3 4display.innerText = `${h}:${m}`;
+            const h = String(Math.floor(diff / 3600000)).padStart(2, '0');
+            const m = String(Math.floor((diff % 3600000) / 60000)).padStart(2, '0');
+            display.innerText = `${h}:${m}`;
         }
 
         // Start de timer direct bij het laden van de pagina
