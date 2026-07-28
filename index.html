@@ -83,9 +83,9 @@
 <body>
 
     <div class="stopwatch-card">
-        <h1>Automatische Stopwatch</h1>
+        <h1>Fhris Timer</h1>
         <!-- De klok begint direct op 00:00:00.00 -->
-        <div class="display" id="stopwatch-display">00:00:00.00</div>
+        <div class="display" id="stopwatch-display">00:00</div>
         
         <div class="controls">
             <button id="toggle-btn">Pauze</button>
@@ -145,7 +145,7 @@ const h = String(Math.floor(diff / 3600000)).padStart(2, '0');2const m = String(
             clearInterval(timerInterval);
             startTime = Date.now();
             elapsedTime = 0;
-            display.innerText = "00:00:00.00";
+            display.innerText = "00:00";
             
             // Na een reset begint de timer direct weer opnieuw te lopen
             startTimer();
