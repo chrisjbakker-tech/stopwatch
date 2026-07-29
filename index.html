@@ -101,7 +101,6 @@
 
         const display = document.getElementById('stopwatch-display');
         const toggleBtn = document.getElementById('toggle-btn');
-        const resetBtn = document.getElementById('reset-btn');
 
         // Functie die de tijd berekent en update
         function updateTime() {
@@ -140,17 +139,6 @@
             } else {
                 startTimer();
             }
-        });
-
-        // Knopfunctionaliteit: Reset
-        resetBtn.addEventListener('click', () => {
-            clearInterval(timerInterval);
-            startTime = Date.now();
-            elapsedTime = 0;
-            display.innerText = "00:00";
-            
-            // Na een reset begint de timer direct weer opnieuw te lopen
-            startTimer();
         });
 
         // Start het script direct zodra de pagina geladen is
